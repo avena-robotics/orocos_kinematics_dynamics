@@ -62,7 +62,8 @@ void init_motion(py::module &m)
     py::class_<Path_Line, Path>(m, "Path_Line")
     .def(py::init<const Frame&, const Frame&, RotationalInterpolation*, double, bool>())
     .def("PathLength", &Path_Line::PathLength)
-    .def("Pos", &Path_Line::Pos, py::arg("s"));
+    .def("Pos", &Path_Line::Pos, py::arg("s"))
+    .def("LengthToS", &Path_Line::LengthToS, py::arg("length"));
 
     // --------------------
     // VelocityProfile
