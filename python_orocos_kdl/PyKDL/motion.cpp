@@ -1,30 +1,10 @@
-//Copyright  (C)  2007  Ruben Smits <ruben dot smits at intermodalics dot eu>
-//
-//Version: 1.0
-//Author: Ruben Smits Ruben Smits <ruben dot smits at intermodalics dot eu>
-//Author: Zihan Chen <zihan dot chen dot jhu at gmail dot com>
-//Author: Matthijs van der Burgh <MatthijsBurgh at outlook dot com>
-//Maintainer: Ruben Smits Ruben Smits <ruben dot smits at intermodalics dot eu>
-//Maintainer: Matthijs van der Burgh <MatthijsBurgh at outlook dot com>
-//URL: http://www.orocos.org/kdl
-//
-//This library is free software; you can redistribute it and/or
-//modify it under the terms of the GNU Lesser General Public
-//License as published by the Free Software Foundation; either
-//version 2.1 of the License, or (at your option) any later version.
-//
-//This library is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//Lesser General Public License for more details.
-//
-//You should have received a copy of the GNU Lesser General Public
-//License along with this library; if not, write to the Free Software
-//Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
+//Copyright  (C)  2023  Łukasz Łęcki <lukasz dot lecki at pomagier dot info>
 
 #include <kdl/path.hpp>
 #include <kdl/path_line.hpp>
+#include <kdl/path_point.hpp>
+#include <kdl/path_composite.hpp>
+#include <kdl/path_roundedcomposite.hpp>
 #include <kdl/rotational_interpolation_sa.hpp>
 #include <kdl/velocityprofile.hpp>
 #include <kdl/velocityprofile_trap.hpp>
@@ -64,6 +44,29 @@ void init_motion(py::module &m)
     .def("PathLength", &Path_Line::PathLength)
     .def("Pos", &Path_Line::Pos, py::arg("s"))
     .def("LengthToS", &Path_Line::LengthToS, py::arg("length"));
+
+    // --------------------
+    // Path_Point
+    // --------------------
+    py::class_<Path_Point, Path>(m, "Path_Point")
+    .def(py::init<const Frame&>())
+    .def("Pos", &Path_Point::Pos, py::arg("s"))
+    .def("Vel", &Path_Point::Vel, py::arg("s"), py::arg("sd"))
+    .def("Acc", &Path_Point::Acc, py::arg("s"), py::arg("sd"), py::arg("sdd"))
+    .def("PathLength", &Path_Point::PathLength)
+    .def("LengthToS", &Path_Point::LengthToS, py::arg("length"));
+
+    // --------------------
+    // Path_Composite
+    // --------------------
+    py::class_<Path_Composite, Path>(m, "Path_Composite")
+    .def(py::init<>());
+
+    // --------------------
+    // Path_RoundedComposite
+    // --------------------
+    py::class_<Path_RoundedComposite, Path>(m, "Path_RoundedComposite")
+    .def(py::init<double, double, RotationalInterpolation*, bool>());
 
     // --------------------
     // VelocityProfile
