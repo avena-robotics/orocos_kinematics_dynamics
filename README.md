@@ -18,6 +18,8 @@ cd ../..
 
 mkdir python_orocos_kdl/build
 
+cd mkdir python_orocos_kdl/build
+
 cmake ..
 
 make
