@@ -1,3 +1,22 @@
+# TL;TR
+
+git clone --recurse-submodules https://github.com/avena-robotics/orocos_kinematics_dynamics
+
+cd orocos_kinematics_dynamics
+mkdir orocos_kdl/build
+cd orocos_kdl/build
+cmake ..
+make
+sudo make install
+
+cd ../..
+mkdir python_orocos_kdl/build
+cmake ..
+make
+sudo make install
+
+
+
 # Kinematics and Dynamics Library
 
 [![CI](https://github.com/orocos/orocos_kinematics_dynamics/workflows/CI/badge.svg)](https://github.com/orocos/orocos_kinematics_dynamics/actions)
