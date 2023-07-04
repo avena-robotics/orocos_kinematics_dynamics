@@ -89,6 +89,7 @@ void init_motion(py::module &m)
     // Trajectory_Segment
     // --------------------
     py::class_<Trajectory_Segment, Trajectory>(m, "Trajectory_Segment")
+    .def(py::init<Path*, VelocityProfile*, bool>())
     .def("Pos", &Trajectory_Segment::Pos, py::arg("time"))
     .def("Vel", &Trajectory_Segment::Vel, py::arg("time"))
     .def("Acc", &Trajectory_Segment::Acc, py::arg("time"))
