@@ -10,6 +10,7 @@
 #include <kdl/velocityprofile_trap.hpp>
 #include <kdl/trajectory.hpp>
 #include <kdl/trajectory_segment.hpp>
+#include <kdl/trajectory_composite.hpp>
 #include "PyKDL.h"
 
 namespace py = pybind11;
@@ -95,4 +96,10 @@ void init_motion(py::module &m)
     .def("Acc", &Trajectory_Segment::Acc, py::arg("time"))
     .def("Duration", &Trajectory_Segment::Duration);
 
+    // --------------------
+    // Trajectory_Composite
+    // --------------------
+    py::class_<Trajectory_Composite, Trajectory>(m, "Trajectory_Composite")
+    .def(py::init<>())
+    .def("Add", &Trajectory_Composite::Add, py::arg("elem"));
 }
