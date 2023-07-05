@@ -29,7 +29,11 @@ void init_motion(py::module &m)
     // RotationalInterpolation_SingleAxis
     // --------------------
     py::class_<RotationalInterpolation_SingleAxis, RotationalInterpolation>(m, "RotationalInterpolation_SingleAxis")
-    .def(py::init<>());
+    .def(py::init<>())
+    .def("__copy__", [](const RotationalInterpolation_SingleAxis& self)
+    {
+        return RotationalInterpolation_SingleAxis(self);
+    });
 
 
     // --------------------
@@ -67,7 +71,10 @@ void init_motion(py::module &m)
     // Path_RoundedComposite
     // --------------------
     py::class_<Path_RoundedComposite, Path>(m, "Path_RoundedComposite")
-    .def(py::init<double, double, RotationalInterpolation*, bool>());
+    .def(py::init<double, double, RotationalInterpolation*, bool>())
+    .def("PathLength", &Path_RoundedComposite::PathLength)
+    .def("Finish", &Path_RoundedComposite::Finish)
+    .def("Add", &Path_RoundedComposite::Add, py::arg("F_base_point"));
 
     // --------------------
     // VelocityProfile
@@ -101,5 +108,6 @@ void init_motion(py::module &m)
     // --------------------
     py::class_<Trajectory_Composite, Trajectory>(m, "Trajectory_Composite")
     .def(py::init<>())
+    .def("Duration", &Trajectory_Composite::Duration)
     .def("Add", &Trajectory_Composite::Add, py::arg("elem"));
 }
