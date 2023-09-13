@@ -1,5 +1,7 @@
 # TL;TR
 
+sudo apt install liborocos-kdl-dev
+
 git clone --recurse-submodules https://github.com/avena-robotics/orocos_kinematics_dynamics
 
 cd orocos_kinematics_dynamics
