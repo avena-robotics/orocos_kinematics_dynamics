@@ -8,6 +8,8 @@
 #include <kdl/rotational_interpolation_sa.hpp>
 #include <kdl/velocityprofile.hpp>
 #include <kdl/velocityprofile_trap.hpp>
+#include <kdl/velocityprofile_traphalf.hpp>
+#include <kdl/velocityprofile_spline.hpp>
 #include <kdl/trajectory.hpp>
 #include <kdl/trajectory_segment.hpp>
 #include <kdl/trajectory_composite.hpp>
@@ -65,7 +67,9 @@ void init_motion(py::module &m)
     // Path_Composite
     // --------------------
     py::class_<Path_Composite, Path>(m, "Path_Composite")
-    .def(py::init<>());
+    .def(py::init<>())
+    .def("PathLength", &Path_Composite::PathLength)
+    .def("Add", &Path_Composite::Add, py::arg("geom"), py::arg("aggregate"));
 
     // --------------------
     // Path_RoundedComposite
@@ -86,7 +90,39 @@ void init_motion(py::module &m)
     // --------------------
     py::class_<VelocityProfile_Trap, VelocityProfile>(m, "VelocityProfile_Trap")
     .def(py::init<double, double>())
-    .def("SetProfile", &VelocityProfile_Trap::SetProfile, py::arg("pos1"), py::arg("pos2"));
+    .def("SetProfile", &VelocityProfile_Trap::SetProfile, py::arg("pos1"), py::arg("pos2"))
+    .def("SetProfileDuration", &VelocityProfile_Trap::SetProfileDuration, py::arg("pos1"), py::arg("pos2"), py::arg("newduration"))
+    .def("SetProfileVelocity", &VelocityProfile_Trap::SetProfileVelocity, py::arg("pos1"), py::arg("pos2"), py::arg("newvelocity"))
+    .def("Pos", &VelocityProfile_Trap::Pos, py::arg("time"))
+    .def("Vel", &VelocityProfile_Trap::Vel, py::arg("time"))
+    .def("Acc", &VelocityProfile_Trap::Acc, py::arg("time"))
+    .def("Duration", &VelocityProfile_Trap::Duration);
+
+    // --------------------
+    // VelocityProfile_TrapHalf
+    // --------------------
+    py::class_<VelocityProfile_TrapHalf, VelocityProfile>(m, "VelocityProfile_TrapHalf")
+    .def(py::init<double, double, bool>())
+    .def("SetProfile", &VelocityProfile_TrapHalf::SetProfile, py::arg("pos1"), py::arg("pos2"))
+    .def("SetProfileDuration", &VelocityProfile_TrapHalf::SetProfileDuration, py::arg("pos1"), py::arg("pos2"), py::arg("newduration"))
+    .def("Pos", &VelocityProfile_TrapHalf::Pos, py::arg("time"))
+    .def("Vel", &VelocityProfile_TrapHalf::Vel, py::arg("time"))
+    .def("Acc", &VelocityProfile_TrapHalf::Acc, py::arg("time"))
+    .def("Duration", &VelocityProfile_TrapHalf::Duration);
+
+    // --------------------
+    // VelocityProfile_Spline 
+    // --------------------
+    py::class_<VelocityProfile_Spline, VelocityProfile>(m, "VelocityProfile_Spline")
+    .def(py::init<>())
+    .def("SetProfile", &VelocityProfile_Spline::SetProfile, py::arg("pos1"), py::arg("pos2"))
+    .def("SetProfileDuration", (void (VelocityProfile_Spline::*)(double, double, double)) &VelocityProfile_Spline::SetProfileDuration)
+    .def("SetProfileDuration", (void (VelocityProfile_Spline::*)(double, double, double, double, double)) &VelocityProfile_Spline::SetProfileDuration)
+    .def("SetProfileDuration", (void (VelocityProfile_Spline::*)(double, double, double, double, double, double, double)) &VelocityProfile_Spline::SetProfileDuration)
+    .def("Pos", &VelocityProfile_Spline::Pos, py::arg("time"))
+    .def("Vel", &VelocityProfile_Spline::Vel, py::arg("time"))
+    .def("Acc", &VelocityProfile_Spline::Acc, py::arg("time"))
+    .def("Duration", &VelocityProfile_Spline::Duration);
 
     // --------------------
     // Trajectory
